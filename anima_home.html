@@ -204,7 +204,7 @@ html, body { width:100%;min-height:100vh;background:#ede4f8;font-family:'Jost',s
       <div class="header">
         <div>
           <div class="greeting-label">✦ &nbsp; Bienvenida de vuelta</div>
-          <div class="greeting-name">Hola, Amanda 🌙</div>
+          <div class="greeting-name" id="greetingName">Hola, Amanda 🌙</div>
           <div class="greeting-sub">Miércoles 13 · Luna creciente en Virgo</div>
         </div>
         <div class="avatar">🔮</div>
@@ -328,10 +328,10 @@ html, body { width:100%;min-height:100vh;background:#ede4f8;font-family:'Jost',s
 
     <!-- Bottom nav -->
     <div class="bottom-nav">
-      <div class="nav-item active"><div class="nav-icon">🏠</div><div class="nav-label">Inicio</div></div>
-      <div class="nav-item"><div class="nav-icon">🃏</div><div class="nav-label">Cartas</div></div>
-      <div class="nav-item"><div class="nav-icon">💬</div><div class="nav-label">Chat</div></div>
-      <div class="nav-item"><div class="nav-icon">🎂</div><div class="nav-label">Mi Año</div></div>
+      <div class="nav-item active" onclick="location.href='anima_home.html'"><div class="nav-icon">🏠</div><div class="nav-label">Inicio</div></div>
+      <div class="nav-item" onclick="location.href='anima_cartas.html'"><div class="nav-icon">🃏</div><div class="nav-label">Cartas</div></div>
+      <div class="nav-item" onclick="location.href='anima_chat.html'"><div class="nav-icon">💬</div><div class="nav-label">Chat</div></div>
+      <div class="nav-item" onclick="location.href='anima_anio.html'"><div class="nav-icon">🎂</div><div class="nav-label">Mi Año</div></div>
     </div>
   </div>
       <div class="nav-item">
@@ -372,6 +372,16 @@ function toggleLuna() {
     arrow.style.transform = 'rotate(0deg)';
   }
 }
+
+// Leer nombre guardado del onboarding
+window.addEventListener('load', () => {
+  const nombre = localStorage.getItem('anima_nombre') || NOMBRE;
+  const hora = new Date().getHours();
+  const saludo = hora < 12 ? 'Buenos días' : hora < 18 ? 'Buenas tardes' : 'Buenas noches';
+  const el = document.getElementById('greetingName');
+  if (el) el.textContent = `${saludo}, ${nombre} 🌙`;
+});
+
 </script>
 
 <script>

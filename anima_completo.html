@@ -401,7 +401,7 @@ html, body { width:100%;min-height:100vh;background:#f0eaf8;font-family:'Jost',s
                 <div class="carta-spinner"></div>
                 <div class="carta-text">Tejiendo tu carta natal...</div>
               </div>
-              <button class="btn-primary">Entrar a mi Ánima &nbsp; ✦</button>
+              <button class="btn-primary" onclick="window.location.href='anima_home.html'">Entrar a mi Ánima &nbsp; ✦</button>
             </div>
           </div>
 
@@ -484,9 +484,28 @@ function goStep(n){
     nxt.classList.add('active');
     currentStep=n;
     dots.forEach((d,i)=>{d.classList.remove('active','done');if(i<n-1)d.classList.add('done');else if(i===n-1)d.classList.add('active');});
-    if(n===4) document.getElementById('welcomeName').textContent=inputNombre.value.trim()||'Alma';
+    if(n===4){
+      const nombre = inputNombre.value.trim()||'Alma';
+      const fecha = inputFecha.value;
+      const ciudad = inputCiudad.value.trim();
+      // Guardar datos en localStorage para que los use toda la app
+      localStorage.setItem('anima_nombre', nombre);
+      localStorage.setItem('anima_fecha', fecha);
+      localStorage.setItem('anima_ciudad', ciudad);
+      document.getElementById('welcomeName').textContent = nombre;
+    }
   },300);
 }
+
+// Al cargar, verificar si ya existe sesión guardada
+window.addEventListener('load', () => {
+  const nombreGuardado = localStorage.getItem('anima_nombre');
+  if (nombreGuardado) {
+    // Ya hizo onboarding — ir directo al home
+    window.location.href = 'anima_home.html';
+  }
+});
+
 </script>
 <script>
   if ("serviceWorker" in navigator) {

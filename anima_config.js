@@ -1,32 +1,40 @@
 // ═══════════════════════════════════════════
 // ÁNIMA — Configuración Central
 // ═══════════════════════════════════════════
-// Para cambiar el plan de una usuaria, solo
-// cambia PLAN_USUARIO aquí. Todo lo demás
-// se actualiza automáticamente.
 
 const ANIMA_CONFIG = {
   // Plan: 0=Gratis, 1=Esencial($99), 2=Completa($199)
-  PLAN_USUARIO: 0,
+  PLAN_USUARIO: 2,
 
-  // Nombre de la usuaria
+  // Tus datos
   NOMBRE: "Amanda",
 
-  // Cumpleaños (para Tu Año X)
-  CUMPLEANOS: "1998-11-03",
+  // Carta natal
+  SOL: "Escorpio",
+  LUNA: "Piscis",
+  ASCENDENTE: "Leo",
+  VENUS: "Sagitario",
+  MARTE: "Capricornio",
+
+  // Tu Año X
+  CUMPLEANOS: "1996-11-13",
+  NUMERO_PERSONAL: 7,
+  ANO_PERSONAL: "El Año de la Introspección",
 
   // Modo diseñadora: true = ve TODO desbloqueado
-  // Cambia a false antes de publicar para usuarias
-  MODO_DISENADORA: false,
+  MODO_DISENADORA: true,
 
-  // Accesos especiales (para promociones o accesos gratis)
+  // Accesos especiales para promoción
   // Agrega correos aquí para darles acceso Completa gratis
   ACCESOS_ESPECIALES: [
     // "amiga@email.com",
-    // "influencer@email.com",
   ],
 };
 
-// No modificar debajo de esta línea
+// ── No modificar debajo ──
 const PLAN = ANIMA_CONFIG.MODO_DISENADORA ? 2 : ANIMA_CONFIG.PLAN_USUARIO;
 const NOMBRE = ANIMA_CONFIG.NOMBRE;
+const SOL = ANIMA_CONFIG.SOL;
+const LUNA = ANIMA_CONFIG.LUNA;
+const ASCENDENTE = ANIMA_CONFIG.ASCENDENTE;
+const NUMERO_PERSONAL = ANIMA_CONFIG.NUMERO_PERSONAL;
