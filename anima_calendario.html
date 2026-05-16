@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ánima — Calendario Lunar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0;padding:0;box-sizing:border-box; }
+html, body { width:100%;min-height:100vh;background:#0d0520;font-family:'Jost',sans-serif;overflow-x:hidden; }
+
+.sky { position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 120% 80% at 50% -10%,#2a0848,#0d0520 60%); }
+.stars { position:fixed;inset:0;z-index:1; }
+.star { position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite var(--delay); }
+@keyframes twinkle { 0%,100%{opacity:0.15;transform:scale(1);}50%{opacity:0.9;transform:scale(1.3);} }
+
+.phone-wrapper { position:relative;z-index:10;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:40px 20px 60px; }
+.phone { width:100%;max-width:390px;min-height:844px;background:linear-gradient(180deg,#120330 0%,#1a0840 30%,#0f0228 100%);border-radius:50px;border:1px solid #6030a022;box-shadow:0 40px 100px #000000aa,0 0 0 1px #9b60c811,inset 0 1px 0 #9b60c822;overflow:hidden;display:flex;flex-direction:column;position:relative; }
+.notch { width:126px;height:34px;background:#1a0840;border-radius:0 0 20px 20px;margin:0 auto;flex-shrink:0; }
+.status-bar { display:flex;justify-content:space-between;align-items:center;padding:4px 28px 0;flex-shrink:0; }
+.status-time { font-size:12px;color:#9878b8; }
+.status-icons { font-size:12px;color:#6a4090; }
+
+.scroll { flex:1;overflow-y:auto;padding:0 0 120px;scrollbar-width:none; }
+.scroll::-webkit-scrollbar { display:none; }
+
+/* Header */
+.page-header { display:flex;align-items:center;gap:12px;padding:16px 20px 0; }
+.back-btn { width:36px;height:36px;border-radius:12px;background:#ffffff11;border:1px solid #9b60c822;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;color:#c8a0e8; }
+.page-title { font-family:'Cormorant Garamond',serif;font-size:24px;color:#e8d0ff; }
+.page-sub { font-size:9px;color:#6a4090;letter-spacing:2px;text-transform:uppercase;margin-top:2px; }
+
+/* Mini calendario */
+.mini-cal { padding:16px 20px 0; }
+.cal-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:12px; }
+.cal-mes { font-family:'Cormorant Garamond',serif;font-size:18px;color:#c8a0e8; }
+.cal-nav { width:28px;height:28px;border-radius:8px;background:#ffffff0a;border:1px solid #9b60c822;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9878b8;font-size:13px; }
+.cal-grid { display:grid;grid-template-columns:repeat(7,1fr);gap:3px; }
+.cal-dow { font-size:8px;letter-spacing:1px;text-transform:uppercase;color:#6a4090;text-align:center;padding:3px 0; }
+.cal-day { aspect-ratio:1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;gap:1px; }
+.cal-day:hover { background:#ffffff0a; }
+.cal-day.today { background:#9b60c822;border:1px solid #9b60c844; }
+.cal-day.selected { background:linear-gradient(135deg,#9b60c8,#7b40a8);box-shadow:0 4px 12px #9b60c855; }
+.cal-day-num { font-size:11px;color:#c8a0e8aa;line-height:1; }
+.cal-day.today .cal-day-num,
+.cal-day.selected .cal-day-num { color:#f5e8ff; }
+.cal-day.otro-mes .cal-day-num { color:#6a409066; }
+.cal-day-luna { font-size:8px;line-height:1; }
+
+/* Hero luna */
+.luna-hero { margin:16px 20px 0;border-radius:24px;overflow:hidden;position:relative;background:linear-gradient(160deg,#1a0840,#2d0a5c);border:1px solid #9b60c822; }
+.luna-hero-bg { position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,#9b60c811,transparent 70%); }
+.luna-hero-content { position:relative;z-index:1;padding:24px;display:flex;flex-direction:column;align-items:center; }
+.luna-fecha-label { font-size:8px;letter-spacing:4px;text-transform:uppercase;color:#9b60c855;margin-bottom:14px; }
+.luna-display { width:100px;height:100px;margin-bottom:14px;filter:drop-shadow(0 0 24px #c8a0e822); }
+.luna-display svg { width:100%;height:100%; }
+.luna-nombre { font-family:'Cormorant Garamond',serif;font-size:24px;color:#f5e8ff;margin-bottom:4px;text-align:center; }
+.luna-ciclo { font-size:9px;color:#9878b8aa;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px; }
+.tags-row { display:flex;gap:6px;flex-wrap:wrap;justify-content:center; }
+.tag { background:#ffffff08;border:1px solid #9b60c833;border-radius:20px;padding:4px 10px;font-size:10px;color:#c8a0e877;font-family:'Cormorant Garamond',serif;font-style:italic; }
+
+/* Cards de belleza */
+.belleza-wrap { padding:16px 20px 0;display:flex;flex-direction:column;gap:10px; }
+
+.bcard { border-radius:18px;padding:16px;border:1px solid #9b60c811;position:relative;overflow:hidden;background:linear-gradient(135deg,#1a0840,#2a0a50); }
+.bcard::before { content:'';position:absolute;top:0;left:0;right:0;height:1.5px; }
+.bcard.cabello::before { background:linear-gradient(90deg,#d4a843,#f0cc6e); }
+.bcard.piel::before   { background:linear-gradient(90deg,#60c8a0,#90e8c0); }
+
+.bcard-header { display:flex;align-items:center;gap:10px;margin-bottom:8px; }
+.bcard-icon { font-size:20px; }
+.bcard-titulo { font-family:'Cormorant Garamond',serif;font-size:16px;color:#f5e8ff; }
+.bcard-sub { font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#6a4090; }
+.bcard-texto { font-family:'Cormorant Garamond',serif;font-size:14px;color:#c8a0e888;line-height:1.7;font-style:italic; }
+.bcard-texto strong { color:#e8d0ff;font-weight:400; }
+
+/* Bottom nav */
+.bottom-nav { position:absolute;bottom:0;left:0;right:0;background:#0f0228ee;border-top:1px solid #9b60c811;padding:10px 20px 20px;display:flex;justify-content:space-around;backdrop-filter:blur(20px); }
+.nav-item { display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex:1; }
+.nav-icon { font-size:22px; }
+.nav-label { font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#6a4090; }
+.nav-item.active .nav-label { color:#9b60c8; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);} }
+.anim { animation:fadeUp 0.4s ease-out both; }
+.watermark { position:fixed;bottom:20px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6a409044;white-space:nowrap;z-index:5; }
+</style>
+  <link rel="manifest" href="manifest.json">
+  <script src="anima_config.js"></script>
+  <meta name="theme-color" content="#9b60c8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ánima">
+  <link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+
+<div class="sky"></div>
+<div class="stars" id="stars"></div>
+
+<div class="phone-wrapper">
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="status-bar">
+      <div class="status-time">9:41</div>
+      <div class="status-icons">●●● 📶 🔋</div>
+    </div>
+
+    <div class="scroll" id="mainScroll">
+
+      <div class="page-header">
+        <div class="back-btn">←</div>
+        <div>
+          <div class="page-title">Luna y Belleza 🌙</div>
+          <div class="page-sub">Tu guía lunar del día</div>
+        </div>
+      </div>
+
+      <!-- Mini calendario -->
+      <div class="mini-cal">
+        <div class="cal-header">
+          <div class="cal-nav">‹</div>
+          <div class="cal-mes">Mayo 2026</div>
+          <div class="cal-nav">›</div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
+      <!-- Hero luna -->
+      <div class="luna-hero">
+        <div class="luna-hero-bg"></div>
+        <div class="luna-hero-content">
+          <div class="luna-fecha-label" id="fechaLabel">✦ Hoy · 13 de mayo</div>
+          <div class="luna-display" id="lunaDisplay"></div>
+          <div class="luna-nombre" id="lunaNombre">—</div>
+          <div class="luna-ciclo" id="lunaCiclo">—</div>
+          <div class="tags-row" id="tagsFila"></div>
+        </div>
+      </div>
+
+      <!-- Cards de belleza -->
+      <div class="belleza-wrap">
+        <div class="bcard cabello anim">
+          <div class="bcard-header">
+            <div class="bcard-icon">💇‍♀️</div>
+            <div>
+              <div class="bcard-titulo">Cabello</div>
+              <div class="bcard-sub" id="cabellaLabel">Consejo del día</div>
+            </div>
+          </div>
+          <div class="bcard-texto" id="cabellaTexto">—</div>
+        </div>
+
+        <div class="bcard piel anim" style="animation-delay:0.1s">
+          <div class="bcard-header">
+            <div class="bcard-icon">🌿</div>
+            <div>
+              <div class="bcard-titulo">Piel</div>
+              <div class="bcard-sub" id="pielLabel">Consejo del día</div>
+            </div>
+          </div>
+          <div class="bcard-texto" id="pielTexto">—</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-item active"><div class="nav-icon">🏠</div><div class="nav-label">Inicio</div></div>
+      <div class="nav-item"><div class="nav-icon">🃏</div><div class="nav-label">Cartas</div></div>
+      <div class="nav-item"><div class="nav-icon">💬</div><div class="nav-label">Chat</div></div>
+      <div class="nav-item"><div class="nav-icon">🎂</div><div class="nav-label">Mi Año</div></div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="watermark">Ánima · Luna y Belleza · México 2026</div>
+
+<script>
+// Estrellas
+const sc = document.getElementById('stars');
+for (let i = 0; i < 70; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 2.2 + 0.5;
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+2).toFixed(1)}s;--delay:-${(Math.random()*4).toFixed(1)}s;`;
+  sc.appendChild(s);
+}
+
+// Fases Mayo 2026
+const FASES = {
+  1:'creciente',2:'creciente',3:'creciente',4:'cuarto_c',5:'creciente_g',
+  6:'creciente_g',7:'creciente_g',8:'creciente_g',9:'creciente_g',10:'creciente_g',
+  11:'creciente_g',12:'llena',13:'gibosa_m',14:'gibosa_m',15:'gibosa_m',
+  16:'gibosa_m',17:'gibosa_m',18:'gibosa_m',19:'gibosa_m',20:'cuarto_m',
+  21:'menguante',22:'menguante',23:'menguante',24:'menguante',25:'menguante',
+  26:'menguante',27:'nueva',28:'nueva',29:'creciente',30:'creciente',31:'creciente',
+};
+
+const EMOJIS = { nueva:'🌑',creciente:'🌒',cuarto_c:'🌓',creciente_g:'🌔',llena:'🌕',gibosa_m:'🌖',cuarto_m:'🌗',menguante:'🌘' };
+
+const SVG = {
+  nueva:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#1a0840" stroke="#9b60c833" stroke-width="1.5"/></svg>`,
+  creciente:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#1a0840" stroke="#9b60c822" stroke-width="1"/><path d="M50,6 A44,44 0 0,1 50,94 A22,44 0 0,0 50,6" fill="#e8d0ff" opacity="0.92"/></svg>`,
+  cuarto_c:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#1a0840" stroke="#9b60c822" stroke-width="1"/><path d="M50,6 A44,44 0 0,1 50,94 L50,6" fill="#e8d0ff" opacity="0.92"/></svg>`,
+  creciente_g:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#1a0840" stroke="#9b60c822" stroke-width="1"/><path d="M50,6 A44,44 0 0,1 50,94 A12,44 0 0,1 50,6" fill="#e8d0ff" opacity="0.92"/></svg>`,
+  llena:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#e8d0ff" opacity="0.95"/><circle cx="50" cy="50" r="44" fill="none" stroke="#f5e8ff55" stroke-width="2"/></svg>`,
+  gibosa_m:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#1a0840" stroke="#9b60c822" stroke-width="1"/><path d="M50,6 A44,44 0 0,0 50,94 A12,44 0 0,0 50,6" fill="#e8d0ff" opacity="0.92"/></svg>`,
+  cuarto_m:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#1a0840" stroke="#9b60c822" stroke-width="1"/><path d="M50,6 A44,44 0 0,0 50,94 L50,6" fill="#e8d0ff" opacity="0.92"/></svg>`,
+  menguante:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#1a0840" stroke="#9b60c822" stroke-width="1"/><path d="M50,6 A44,44 0 0,0 50,94 A22,44 0 0,1 50,6" fill="#e8d0ff" opacity="0.92"/></svg>`,
+};
+
+const INFO = {
+  nueva: {
+    nombre:'Luna Nueva', ciclo:'Tiempo de intención',
+    tags:['Comenzar','Intención','Renovar'],
+    cabello:{ sub:'Pausa y nutre', texto:'La luna nueva pide descanso. <strong>Evita el calor excesivo</strong> y dale a tu cabello una mascarilla nutritiva. No es momento de cortar ni teñir — es momento de preparar.' },
+    piel:{ sub:'Limpia y reinicia', texto:'Ideal para comenzar una <strong>nueva rutina</strong>. Limpia profundo y aplica solo lo esencial. Tu piel también inicia un nuevo ciclo hoy.' },
+  },
+  creciente: {
+    nombre:'Luna Creciente', ciclo:'Tiempo de crecer',
+    tags:['Crecer','Activar','Construir'],
+    cabello:{ sub:'Activa el crecimiento', texto:'Excelente momento para <strong>masajes en el cuero cabelludo</strong> con aceites — estimulan el folículo y aprovechan la energía ascendente de la luna.' },
+    piel:{ sub:'Hidrata con intención', texto:'La piel absorbe mejor los nutrientes en luna creciente. <strong>Aplica tu sérum o crema más nutritiva</strong> — lo que pongas hoy llega más profundo.' },
+  },
+  cuarto_c: {
+    nombre:'Cuarto Creciente', ciclo:'Tiempo de actuar',
+    tags:['Actuar','Decidir','Hacer'],
+    cabello:{ sub:'Momento de cambios', texto:'Si llevas tiempo pensando en un <strong>cambio de look</strong>, hoy la luna te impulsa. La energía es de acción — decide y hazlo.' },
+    piel:{ sub:'Vitamina C y luminosidad', texto:'Usa productos que <strong>iluminen y unifiquen</strong> el tono. La energía del cuarto creciente favorece la luminosidad y el brillo natural.' },
+  },
+  creciente_g: {
+    nombre:'Gibosa Creciente', ciclo:'Casi en su máximo',
+    tags:['Expandir','Abundancia','Preparar'],
+    cabello:{ sub:'Tinte y color', texto:'La luna gibosa creciente es el <strong>mejor momento para teñir</strong>. El cabello absorbe el pigmento con más intensidad — el resultado es más vibrante y duradero.' },
+    piel:{ sub:'Nutrición profunda', texto:'Tu piel está en su máxima capacidad de absorción. <strong>Mascarillas nutritivas, ácido hialurónico y retinol</strong> funcionan mucho mejor hoy.' },
+  },
+  llena: {
+    nombre:'Luna Llena', ciclo:'Máxima energía',
+    tags:['Manifestar','Celebrar','Plenitud'],
+    cabello:{ sub:'Ritual de brillo', texto:'La luna llena es el momento para <strong>aclarados, brillos y tratamientos de lustre</strong>. Tu cabello responde con más intensidad a todo hoy — úsalo a tu favor.' },
+    piel:{ sub:'Cuidado extra', texto:'La piel puede estar más <strong>sensible e inflamada</strong> en luna llena. Evita exfoliaciones agresivas — opta por calmar, hidratar y proteger.' },
+  },
+  gibosa_m: {
+    nombre:'Gibosa Menguante', ciclo:'Tiempo de soltar',
+    tags:['Soltar','Purificar','Agradecer'],
+    cabello:{ sub:'Corta puntas', texto:'Ideal para <strong>cortar las puntas dañadas</strong>. La luna menguante favorece eliminar lo que ya no sirve — el corte se verá limpio y no estimulará el crecimiento rápido.' },
+    piel:{ sub:'Detox y exfoliación', texto:'Momento perfecto para <strong>mascarilla de arcilla o exfoliación suave</strong>. La energía menguante apoya la eliminación de toxinas e impurezas acumuladas.' },
+  },
+  cuarto_m: {
+    nombre:'Cuarto Menguante', ciclo:'Tiempo de soltar',
+    tags:['Soltar','Perdonar','Limpiar'],
+    cabello:{ sub:'Tratamientos anticaída', texto:'La luna menguante <strong>reduce la caída del cabello</strong>. Es el momento ideal para aplicar tratamientos anticaída y fortalecer el folículo desde la raíz.' },
+    piel:{ sub:'Simplifica tu rutina', texto:'Tu piel pide <strong>menos productos hoy</strong>. Simplifica: limpiador suave, hidratante ligero. Menos es más en luna menguante.' },
+  },
+  menguante: {
+    nombre:'Luna Menguante', ciclo:'Tiempo de descanso',
+    tags:['Descansar','Meditar','Silencio'],
+    cabello:{ sub:'Descanso y aceites', texto:'La energía pide pausa. <strong>Aplica aceite de argán o coco</strong> en puntas antes de dormir y deja que actúe toda la noche. Sin calor, sin estrés.' },
+    piel:{ sub:'Hidratación nocturna', texto:'Noche de regeneración. <strong>Crema de noche más rica de lo normal</strong> y deja que la piel trabaje sola mientras duermes. La luna menguante apoya la regeneración celular.' },
+  },
+};
+
+let diaSeleccionado = 13;
+
+function renderCal() {
+  const g = document.getElementById('calGrid');
+  g.innerHTML = ['D','L','M','M','J','V','S'].map(d => `<div class="cal-dow">${d}</div>`).join('');
+  for (let i = 0; i < 5; i++) {
+    const d = 26 + i;
+    g.innerHTML += `<div class="cal-day otro-mes"><div class="cal-day-num">${d}</div><div class="cal-day-luna"></div></div>`;
+  }
+  for (let d = 1; d <= 31; d++) {
+    const fase = FASES[d];
+    const em = EMOJIS[fase] || '';
+    const isHoy = d === 13;
+    const isSel = d === diaSeleccionado;
+    g.innerHTML += `<div class="cal-day ${isHoy?'today':''} ${isSel?'selected':''}" onclick="selecDia(${d})">
+      <div class="cal-day-num">${d}</div>
+      <div class="cal-day-luna">${em}</div>
+    </div>`;
+  }
+}
+
+function selecDia(d) {
+  diaSeleccionado = d;
+  renderCal();
+  actualizarDia(d);
+}
+
+function actualizarDia(d) {
+  const fase = FASES[d];
+  const info = INFO[fase];
+  if (!info) return;
+
+  const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const esHoy = d === 13;
+  document.getElementById('fechaLabel').textContent = `✦ ${esHoy ? 'Hoy · ' : ''}${d} de mayo`;
+  document.getElementById('lunaDisplay').innerHTML = SVG[fase];
+  document.getElementById('lunaNombre').textContent = info.nombre;
+  document.getElementById('lunaCiclo').textContent = info.ciclo;
+  document.getElementById('tagsFila').innerHTML = info.tags.map(t => `<div class="tag">${t}</div>`).join('');
+  document.getElementById('cabellaLabel').textContent = info.cabello.sub;
+  document.getElementById('cabellaTexto').innerHTML = info.cabello.texto;
+  document.getElementById('pielLabel').textContent = info.piel.sub;
+  document.getElementById('pielTexto').innerHTML = info.piel.texto;
+}
+
+renderCal();
+actualizarDia(13);
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
+</script>
+</body>
+</html>

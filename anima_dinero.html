@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ánima — Mi Dinero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0;padding:0;box-sizing:border-box; }
+html, body { width:100%;min-height:100vh;background:#ede4f8;font-family:'Jost',sans-serif;overflow-x:hidden; }
+
+.cosmos { position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 15% 0%,#d4a8f044,transparent 55%),radial-gradient(ellipse 70% 70% at 85% 100%,#c8a0e833,transparent 55%),linear-gradient(160deg,#ede0f8 0%,#f5eeff 40%,#ecdff5 70%,#f8f0ff 100%); }
+.nebula { position:fixed;border-radius:50%;filter:blur(80px);z-index:0; }
+.n1 { width:500px;height:380px;background:radial-gradient(circle,#c8a0e833,transparent 70%);top:-5%;left:-10%;animation:drift 14s ease-in-out infinite; }
+.n2 { width:380px;height:480px;background:radial-gradient(circle,#f0cc6e22,transparent 70%);bottom:0;right:-10%;animation:drift 18s ease-in-out infinite -5s; }
+@keyframes drift { 0%,100%{transform:translate(0,0);}50%{transform:translate(18px,-18px);} }
+
+.phone-wrapper { position:relative;z-index:10;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:40px 20px 60px; }
+.phone { width:100%;max-width:390px;min-height:844px;background:linear-gradient(160deg,#f8f2ff 0%,#f2eaff 40%,#f8f0ff 100%);border-radius:50px;border:1px solid #d4b8ee44;box-shadow:0 40px 100px #c8a0e844,0 0 0 1px #ffffff88,inset 0 1px 0 #ffffffcc;overflow:hidden;display:flex;flex-direction:column;position:relative; }
+.notch { width:126px;height:34px;background:#f0eaff;border-radius:0 0 20px 20px;margin:0 auto;flex-shrink:0;z-index:10; }
+.status-bar { display:flex;justify-content:space-between;align-items:center;padding:4px 28px 0;flex-shrink:0; }
+.status-time { font-size:12px;font-weight:400;color:#6a40a0; }
+.status-icons { font-size:12px;color:#9878b8; }
+
+.scroll { flex:1;overflow-y:auto;padding:14px 20px 100px;scrollbar-width:none; }
+.scroll::-webkit-scrollbar { display:none; }
+
+/* ── HEADER ── */
+.page-header { display:flex;align-items:center;gap:12px;margin-bottom:16px; }
+.back-btn { width:36px;height:36px;border-radius:12px;background:#ffffffbb;border:1px solid #d4b8ee44;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;box-shadow:0 4px 12px #c8a0e818; }
+.page-title { font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:#3d1a60;flex:1; }
+
+/* ── HERO CARD ── */
+.hero-card {
+  background:linear-gradient(135deg,#3d1a60,#5c2888);
+  border-radius:24px;padding:20px;margin-bottom:14px;
+  box-shadow:0 16px 40px #6b2fa055;
+  position:relative;overflow:hidden;
+}
+.hero-card::before { content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#d4a84322,transparent 70%); }
+.hero-card::after  { content:'';position:absolute;bottom:-40px;left:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#f0cc6e18,transparent 70%); }
+
+.hero-eyebrow { font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#d4a84388;margin-bottom:8px; }
+.hero-title { font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#f5e8ff;line-height:1.2;margin-bottom:6px; }
+.hero-title em { font-style:normal;background:linear-gradient(135deg,#f0cc6e,#f8d888);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.hero-sub { font-size:11px;color:#c8a0e8aa;font-weight:300;line-height:1.5;margin-bottom:16px; }
+
+/* Casas del dinero badges */
+.casas-row { display:flex;gap:8px; }
+.casa-badge { flex:1;background:#ffffff14;border:1px solid #ffffff18;border-radius:12px;padding:10px 8px;text-align:center; }
+.casa-num   { font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:#f0cc6e;margin-bottom:2px; }
+.casa-label { font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#c8a0e8aa;margin-bottom:2px; }
+.casa-sign  { font-family:'Cormorant Garamond',serif;font-size:13px;color:#f5e8ff; }
+
+/* ── SECCIÓN TÍTULO ── */
+.section-title { font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#9878b8;margin-bottom:10px;margin-top:4px; }
+
+/* ── DON NATURAL ── */
+.don-card {
+  background:#ffffffbb;border:1px solid #d4b8ee44;border-radius:20px;padding:18px;
+  backdrop-filter:blur(20px);box-shadow:0 6px 20px #c8a0e820;margin-bottom:12px;
+  position:relative;overflow:hidden;
+}
+.don-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#d4a843,#f0cc6e,#d4a843); }
+
+.don-header { display:flex;align-items:center;gap:12px;margin-bottom:14px; }
+.don-icon { width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#fff0c8,#f8d888);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px #d4a84322;flex-shrink:0; }
+.don-title { font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:#3d1a60; }
+.don-sub   { font-size:10px;color:#9878b8;margin-top:2px; }
+
+.don-texto { font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:#6a40a0;line-height:1.7;margin-bottom:14px; }
+
+/* Talentos pills */
+.talentos { display:flex;flex-wrap:wrap;gap:6px; }
+.talento { background:linear-gradient(135deg,#fff8e8,#fff0c8);border:1px solid #d4a84333;border-radius:20px;padding:5px 12px;font-size:11px;color:#8a6020;letter-spacing:0.5px; }
+
+/* ── TIPO DE TRABAJO ── */
+.trabajo-grid { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px; }
+.trabajo-card { background:#ffffffbb;border:1px solid #d4b8ee44;border-radius:16px;padding:14px 12px;backdrop-filter:blur(20px);box-shadow:0 4px 14px #c8a0e814;text-align:center; }
+.trabajo-icon  { font-size:26px;margin-bottom:6px;display:block; }
+.trabajo-title { font-size:12px;font-weight:400;color:#3d1a60;margin-bottom:4px; }
+.trabajo-desc  { font-size:10px;color:#9878b8;line-height:1.4;font-weight:300; }
+
+.trabajo-card.match {
+  background:linear-gradient(135deg,#f8e8ff,#fff8e8);
+  border-color:#d4a84344;
+  box-shadow:0 6px 18px #d4a84318;
+}
+.trabajo-card.match .trabajo-title { color:#6a3010; }
+.match-badge { display:inline-block;background:linear-gradient(135deg,#d4a843,#f0cc6e);border-radius:10px;padding:2px 8px;font-size:8px;color:#fff;letter-spacing:1px;margin-bottom:6px; }
+
+/* ── BLOQUEOS ── */
+.bloqueo-card { background:#ffffffbb;border:1px solid #d4b8ee44;border-radius:16px;padding:14px 16px;backdrop-filter:blur(20px);box-shadow:0 4px 14px #c8a0e814;margin-bottom:8px;cursor:pointer;transition:all 0.3s; }
+.bloqueo-card:hover { transform:translateY(-1px); }
+.bloqueo-card.expanded { border-color:#9b60c855; }
+.bloqueo-top { display:flex;align-items:center;gap:10px; }
+.bloqueo-icon { width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:linear-gradient(135deg,#f8e0e0,#f0c8c8); }
+.bloqueo-info { flex:1; }
+.bloqueo-title { font-size:12px;font-weight:400;color:#3d1a60;margin-bottom:2px; }
+.bloqueo-planet { font-size:10px;color:#9878b8;letter-spacing:1px; }
+.bloqueo-arrow { font-size:14px;color:#c8a0d8;transition:transform 0.3s; }
+.bloqueo-card.expanded .bloqueo-arrow { transform:rotate(90deg); }
+.bloqueo-desc { max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:#6a40a0;line-height:1.6; }
+.bloqueo-card.expanded .bloqueo-desc { max-height:150px;opacity:1;margin-top:10px;padding-top:10px;border-top:1px solid #d4b8ee33; }
+.bloqueo-tip { margin-top:8px;background:#f5eeff;border-radius:8px;padding:8px 10px;font-size:11px;color:#6a40a0;display:flex;gap:6px;font-style:normal; }
+
+/* ── MEJOR MOMENTO ── */
+.momento-card {
+  background:linear-gradient(135deg,#3d1a60,#5c2888);
+  border-radius:20px;padding:18px;margin-bottom:12px;
+  box-shadow:0 12px 32px #6b2fa044;position:relative;overflow:hidden;
+}
+.momento-card::before { content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#f0cc6e18,transparent 70%); }
+.momento-eyebrow { font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#d4a84377;margin-bottom:10px; }
+
+.momento-timeline { display:flex;flex-direction:column;gap:0; }
+.momento-item { display:flex;gap:12px;position:relative; }
+.momento-item::before { content:'';position:absolute;left:19px;top:28px;bottom:-12px;width:1px;background:#ffffff14; }
+.momento-item:last-child::before { display:none; }
+
+.momento-dot-wrap { display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:4px; }
+.momento-dot { width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-bottom:0; }
+.dot-now    { background:linear-gradient(135deg,#f0cc6e,#d4a843);box-shadow:0 0 10px #f0cc6e66; }
+.dot-soon   { background:#9b60c8;box-shadow:0 0 8px #9b60c844; }
+.dot-future { background:#ffffff22;border:1px solid #ffffff22; }
+
+.momento-content { padding-bottom:16px;flex:1; }
+.momento-fecha  { font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#d4a84377;margin-bottom:3px; }
+.momento-titulo { font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;color:#f5e8ff;margin-bottom:3px; }
+.momento-desc   { font-size:11px;color:#c8a0e8aa;line-height:1.4;font-weight:300; }
+.momento-badge  { display:inline-block;margin-top:5px;background:#f0cc6e22;border:1px solid #f0cc6e33;border-radius:10px;padding:2px 10px;font-size:9px;color:#f0cc6e;letter-spacing:1px; }
+
+/* ── CARRERAS Y NEGOCIOS ── */
+.carreras { display:flex;flex-direction:column;gap:8px;margin-bottom:12px; }
+.carrera-row {
+  background:#ffffffbb;border:1px solid #d4b8ee44;border-radius:14px;padding:12px 14px;
+  backdrop-filter:blur(20px);box-shadow:0 4px 12px #c8a0e810;
+  display:flex;align-items:center;gap:12px;
+}
+.carrera-icon  { font-size:22px;flex-shrink:0; }
+.carrera-info  { flex:1; }
+.carrera-title { font-size:12px;font-weight:400;color:#3d1a60;margin-bottom:2px; }
+.carrera-desc  { font-size:10px;color:#9878b8;line-height:1.4; }
+.carrera-fit   { font-size:10px;font-weight:400; }
+.fit-alta   { color:#4a8a4a; }
+.fit-media  { color:#8a6020; }
+
+/* ── AFIRMACIÓN ABUNDANCIA ── */
+.afirmacion-card {
+  background:linear-gradient(135deg,#fff8e8,#f8e8ff);
+  border:1px solid #d4a84333;border-radius:20px;padding:18px;
+  box-shadow:0 6px 20px #d4a84314;text-align:center;
+}
+.afirmacion-symbol { font-size:32px;margin-bottom:10px; }
+.afirmacion-label  { font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#9878b8;margin-bottom:10px; }
+.afirmacion-text   { font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#3d1a60;line-height:1.6;margin-bottom:14px; }
+.afirmacion-btn    { background:linear-gradient(135deg,#d4a843,#f0cc6e);border:none;border-radius:14px;padding:11px 24px;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#3d1a20;cursor:pointer;box-shadow:0 6px 18px #d4a84333;transition:transform 0.2s; }
+.afirmacion-btn:hover { transform:scale(1.02); }
+
+/* PREMIUM BLUR */
+.premium-section { position:relative;margin-bottom:8px; }
+.premium-blur { filter:blur(5px);pointer-events:none;user-select:none;opacity:0.7; }
+.premium-overlay { position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,#f5eeffbb 40%,#f5eeffee 100%);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:16px;z-index:10; }
+.lock-badge { background:linear-gradient(135deg,#d4a843,#b8860b);border-radius:20px;padding:10px 20px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px #d4a84344;cursor:pointer;transition:transform 0.2s;margin-bottom:6px; }
+.lock-badge:hover { transform:scale(1.03); }
+.lock-icon { font-size:16px; }
+.lock-text { font-family:'Jost',sans-serif;font-size:11px;font-weight:300;letter-spacing:2px;text-transform:uppercase;color:#3d1a00; }
+.lock-sub  { font-size:10px;color:#9878b8;letter-spacing:0.5px;text-align:center; }
+
+/* BOTTOM NAV */
+.bottom-nav { position:absolute;bottom:0;left:0;right:0;background:#f8f2ffee;border-top:1px solid #d4b8ee33;padding:10px 20px 20px;display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(20px); }
+.nav-item { display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex:1; }
+.nav-item-icon { font-size:22px; }
+.nav-item-label { font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#c0a0d8;font-weight:300; }
+.nav-item.active .nav-item-label { color:#9b60c8; }
+.nav-item.active .nav-item-icon { filter:drop-shadow(0 0 6px #9b60c855); }
+
+.watermark { position:fixed;bottom:20px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#9878b844;white-space:nowrap;z-index:20; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);} }
+
+/* Barra de progreso animada */
+@keyframes fillBar { from{width:0;}to{width:var(--w);} }
+.bar-fill { animation:fillBar 1.2s ease-out 0.5s both; }
+</style>
+  <link rel="manifest" href="manifest.json">
+  <script src="anima_config.js"></script>
+  <meta name="theme-color" content="#9b60c8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ánima">
+  <link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+
+<div class="cosmos"></div>
+<div class="nebula n1"></div>
+<div class="nebula n2"></div>
+
+<div class="phone-wrapper">
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="status-bar">
+      <div class="status-time">9:41</div>
+      <div class="status-icons">●●● 📶 🔋</div>
+    </div>
+
+    <div class="scroll">
+
+      <!-- Header -->
+      <div class="page-header">
+        <div class="back-btn">←</div>
+        <div class="page-title">Mi Abundancia 💰</div>
+      </div>
+
+      <!-- Hero -->
+      <div class="hero-card">
+        <div class="hero-eyebrow">✦ &nbsp; Tu mapa de prosperidad</div>
+        <div class="hero-title">El universo ya sabe<br>cómo <em>fluye</em> tu dinero</div>
+        <div class="hero-sub">Tu carta natal revela tus dones naturales para generar abundancia, tus bloqueos y tus mejores momentos financieros del año.</div>
+        <div class="casas-row">
+          <div class="casa-badge">
+            <div class="casa-num">II</div>
+            <div class="casa-label">Casa del dinero</div>
+            <div class="casa-sign">Sagitario</div>
+          </div>
+          <div class="casa-badge">
+            <div class="casa-num">VIII</div>
+            <div class="casa-label">Casa recursos ajenos</div>
+            <div class="casa-sign">Géminis</div>
+          </div>
+          <div class="casa-badge">
+            <div class="casa-num">X</div>
+            <div class="casa-label">Casa de la carrera</div>
+            <div class="casa-sign">Leo</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Don natural -->
+      <div class="section-title">✦ &nbsp; Tu don natural para ganar</div>
+      <div class="don-card">
+        <div class="don-header">
+          <div class="don-icon">⭐</div>
+          <div>
+            <div class="don-title">Liderazgo con profundidad</div>
+            <div class="don-sub">Júpiter en Casa 2 · Marte en Capricornio</div>
+          </div>
+        </div>
+        <div class="don-texto">
+          "Tu dinero viene de posiciones donde lideras y transformas. No fuiste hecha para ejecutar órdenes — fuiste hecha para dar dirección. Tu combinación de intensidad Escorpio y disciplina Capricornio te da una ventaja brutal en ambientes de alta presión y alta recompensa."
+        </div>
+        <div class="talentos">
+          <div class="talento">Estrategia</div>
+          <div class="talento">Liderazgo</div>
+          <div class="talento">Investigación</div>
+          <div class="talento">Transformación</div>
+          <div class="talento">Persuasión</div>
+          <div class="talento">Autonomía</div>
+        </div>
+      </div>
+
+      <!-- Tipo de trabajo -->
+      <div class="section-title">✦ &nbsp; ¿Cómo trabajas mejor?</div>
+      <div class="trabajo-grid">
+        <div class="trabajo-card match">
+          <div class="match-badge">✦ ALTA VIBRA</div>
+          <span class="trabajo-icon">🦅</span>
+          <div class="trabajo-title">Independiente</div>
+          <div class="trabajo-desc">Tu carta pide autonomía. Emprender o freelance te da alas.</div>
+        </div>
+        <div class="trabajo-card match">
+          <div class="match-badge">✦ ALTA VIBRA</div>
+          <span class="trabajo-icon">👑</span>
+          <div class="trabajo-title">Posición de autoridad</div>
+          <div class="trabajo-desc">Directora, fundadora, líder. No seguidora.</div>
+        </div>
+        <div class="trabajo-card">
+          <span class="trabajo-icon">🤝</span>
+          <div class="trabajo-title">En equipo grande</div>
+          <div class="trabajo-desc">Posible pero agotador. Necesitas rol de liderazgo dentro del equipo.</div>
+        </div>
+        <div class="trabajo-card">
+          <span class="trabajo-icon">🏢</span>
+          <div class="trabajo-title">Corporativo tradicional</div>
+          <div class="trabajo-desc">Tu espíritu libre lo siente como jaula. Solo si tienes poder real.</div>
+        </div>
+      </div>
+
+      <!-- Bloqueos -->
+      <div class="section-title">✦ &nbsp; Tus bloqueos con el dinero</div>
+      <div class="bloqueo-card" onclick="toggleBloqueo(this)">
+        <div class="bloqueo-top">
+          <div class="bloqueo-icon">😰</div>
+          <div class="bloqueo-info">
+            <div class="bloqueo-title">El miedo a pedir lo que vales</div>
+            <div class="bloqueo-planet">SATURNO EN CASA 2 · ESCORPIO</div>
+          </div>
+          <div class="bloqueo-arrow">›</div>
+        </div>
+        <div class="bloqueo-desc">
+          "Saturno en tu Casa 2 crea una voz interna que dice que no mereces cobrar más, que pedir es de arrogante. Es una herida profunda — no una verdad."
+          <div class="bloqueo-tip">✍️ Practica: escribe el precio que quieres cobrar y dilo en voz alta hasta que no duela.</div>
+        </div>
+      </div>
+      <div class="bloqueo-card" onclick="toggleBloqueo(this)">
+        <div class="bloqueo-top">
+          <div class="bloqueo-icon">🔄</div>
+          <div class="bloqueo-info">
+            <div class="bloqueo-title">Ganar y luego autosabotearte</div>
+            <div class="bloqueo-planet">NODO SUR EN ESCORPIO · CASA 8</div>
+          </div>
+          <div class="bloqueo-arrow">›</div>
+        </div>
+        <div class="bloqueo-desc">
+          "Tienes una memoria energética de crisis y pérdida. Cuando el dinero llega, una parte de ti espera que se vaya — y a veces lo provoca sin querer."
+          <div class="bloqueo-tip">🌙 Ritual: en luna nueva escribe "soy digna de conservar lo que construyo".</div>
+        </div>
+      </div>
+      <div class="bloqueo-card" onclick="toggleBloqueo(this)">
+        <div class="bloqueo-top">
+          <div class="bloqueo-icon">⏳</div>
+          <div class="bloqueo-info">
+            <div class="bloqueo-title">Impacientarte antes de ver resultados</div>
+            <div class="bloqueo-planet">MARTE EN CAPRICORNIO · CUADRATURA VENUS</div>
+          </div>
+          <div class="bloqueo-arrow">›</div>
+        </div>
+        <div class="bloqueo-desc">
+          "Tu Marte en Capricornio trabaja lento y seguro — pero tu Venus en Sagitario quiere resultados ya. Esa tensión puede hacerte abandonar justo antes de que llegue la recompensa."
+          <div class="bloqueo-tip">💫 Mantra: "Lo que construyo con raíces no se cae con el viento".</div>
+        </div>
+      </div>
+
+      <!-- Mejor momento financiero -->
+      <div class="section-title">✦ &nbsp; Tu mejor momento financiero</div>
+      <div class="momento-card">
+        <div class="momento-eyebrow">TRÁNSITOS QUE ACTIVAN TU ABUNDANCIA</div>
+        <div class="momento-timeline">
+          <div class="momento-item">
+            <div class="momento-dot-wrap"><div class="momento-dot dot-now"></div></div>
+            <div class="momento-content">
+              <div class="momento-fecha">MAYO — JUNIO 2026</div>
+              <div class="momento-titulo">Venus activa tu Casa 2</div>
+              <div class="momento-desc">Momento ideal para pedir aumento, lanzar un servicio o negociar honorarios. Tu energía de atracción está en su punto más alto.</div>
+              <div class="momento-badge">ACTIVO AHORA ✨</div>
+            </div>
+          </div>
+          <div class="momento-item">
+            <div class="momento-dot-wrap"><div class="momento-dot dot-soon"></div></div>
+            <div class="momento-content">
+              <div class="momento-fecha">SEPTIEMBRE 2026</div>
+              <div class="momento-titulo">Júpiter toca tu Casa 10</div>
+              <div class="momento-desc">Expansión de carrera. Oportunidades de visibilidad, reconocimiento y ascenso. No te escondas este mes.</div>
+              <div class="momento-badge">EN 4 MESES</div>
+            </div>
+          </div>
+          <div class="momento-item">
+            <div class="momento-dot-wrap"><div class="momento-dot dot-future"></div></div>
+            <div class="momento-content">
+              <div class="momento-fecha">FEBRERO 2027</div>
+              <div class="momento-titulo">Tu mayor pico financiero del año</div>
+              <div class="momento-desc">Júpiter directo en conjunción con tu Marte natal. El ciclo de 12 años de abundancia se activa. Planta semillas ahora para cosechar entonces.</div>
+              <div class="momento-badge">MÁRKALO EN TU CALENDARIO</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carreras que vibran -->
+      <div class="section-title">✦ &nbsp; Carreras y negocios que vibran contigo</div>
+      <div class="carreras">
+        <div class="carrera-row">
+          <div class="carrera-icon">⚖️</div>
+          <div class="carrera-info">
+            <div class="carrera-title">Derecho · Consultoría Legal</div>
+            <div class="carrera-desc">Tu mente investigadora + Casa 10 en Leo = autoridad natural en el campo legal.</div>
+          </div>
+          <div class="carrera-fit fit-alta">●●●●●</div>
+        </div>
+        <div class="carrera-row">
+          <div class="carrera-icon">🔮</div>
+          <div class="carrera-info">
+            <div class="carrera-title">Espiritualidad · Coaching</div>
+            <div class="carrera-desc">Tu profundidad Escorpio + empatía Piscis = guía natural que transforma vidas.</div>
+          </div>
+          <div class="carrera-fit fit-alta">●●●●●</div>
+        </div>
+        <div class="carrera-row">
+          <div class="carrera-icon">💼</div>
+          <div class="carrera-info">
+            <div class="carrera-title">Emprendimiento propio</div>
+            <div class="carrera-desc">Ascendente Leo + Marte Capricornio = fundadora con presencia y disciplina.</div>
+          </div>
+          <div class="carrera-fit fit-alta">●●●●○</div>
+        </div>
+        <div class="carrera-row">
+          <div class="carrera-icon">🎨</div>
+          <div class="carrera-info">
+            <div class="carrera-title">Industrias creativas</div>
+            <div class="carrera-desc">Venus en Sagitario + Casa 5 activa = creatividad con visión expansiva.</div>
+          </div>
+          <div class="carrera-fit fit-media">●●●○○</div>
+        </div>
+      </div>
+
+      <!-- Premium blur - profundidad extra -->
+      <div class="premium-section">
+        <div class="premium-blur">
+          <div class="section-title">✦ &nbsp; Tu código de abundancia personal</div>
+          <div class="don-card" style="margin-bottom:0;">
+            <div class="don-header">
+              <div class="don-icon">🔢</div>
+              <div>
+                <div class="don-title">Número de prosperidad: 8</div>
+                <div class="don-sub">Numerología + carta natal combinadas</div>
+              </div>
+            </div>
+            <div class="don-texto">"El 8 es el número del poder y la abundancia infinita. Tu manifestación más poderosa ocurre los días 8, 17 y 26 de cada mes..."</div>
+          </div>
+        </div>
+        <div class="premium-overlay">
+          <div class="lock-badge">
+            <div class="lock-icon">💎</div>
+            <div class="lock-text">Desbloquear con Completa</div>
+          </div>
+          <div class="lock-sub">Código personal + ritual de abundancia mensual</div>
+        </div>
+      </div>
+
+      <!-- Afirmación -->
+      <div class="afirmacion-card">
+        <div class="afirmacion-symbol">💫</div>
+        <div class="afirmacion-label">✦ &nbsp; Tu afirmación de abundancia</div>
+        <div class="afirmacion-text">"Soy un imán para la prosperidad. Mi talento tiene valor y el universo conspira para recompensarlo."</div>
+        <button class="afirmacion-btn" onclick="this.textContent='¡Guardada en tu diario! ✦'">Guardar en mi diario &nbsp; ✦</button>
+      </div>
+
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="bottom-nav">
+      <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label">Inicio</div></div>
+      <div class="nav-item active"><div class="nav-icon">🃏</div><div class="nav-label">Cartas</div></div>
+      <div class="nav-item"><div class="nav-icon">💬</div><div class="nav-label">Chat</div></div>
+      <div class="nav-item"><div class="nav-icon">🎂</div><div class="nav-label">Mi Año</div></div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="watermark">Ánima · Mi Abundancia · México 2026</div>
+
+<script>
+function toggleBloqueo(card) {
+  const wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.bloqueo-card').forEach(c => c.classList.remove('expanded'));
+  if (!wasExpanded) card.classList.add('expanded');
+}
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
+</script>
+</body>
+</html>

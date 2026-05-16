@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ánima</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0;padding:0;box-sizing:border-box; }
+html, body { width:100%;min-height:100vh;background:#f0eaf8;font-family:'Jost',sans-serif;overflow-x:hidden; }
+
+/* ── FONDO LILA CLARO ── */
+.cosmos {
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 0%,   #d4a8f044 0%, transparent 55%),
+    radial-gradient(ellipse 70% 70% at 85% 100%,  #c8a0e833 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 50% 45%,   #f0c8e828 0%, transparent 60%),
+    linear-gradient(160deg, #ede0f8 0%, #f5eeff 40%, #ecdff5 70%, #f8f0ff 100%);
+}
+
+/* Partículas suaves */
+.stars { position:fixed;inset:0;z-index:0;overflow:hidden; }
+.star { position:absolute;border-radius:50%;animation:twinkle var(--dur) ease-in-out infinite var(--delay); }
+@keyframes twinkle { 0%,100%{opacity:var(--min-op);}50%{opacity:var(--max-op);transform:scale(1.4);} }
+
+/* Nebulosas pastel */
+.nebula { position:fixed;border-radius:50%;filter:blur(80px);z-index:0; }
+.n1 { width:500px;height:380px;background:radial-gradient(circle,#c8a0e833,transparent 70%);top:-5%;left:-10%;animation:drift 14s ease-in-out infinite; }
+.n2 { width:380px;height:480px;background:radial-gradient(circle,#f0c8e833,transparent 70%);bottom:0;right:-10%;animation:drift 18s ease-in-out infinite -5s; }
+.n3 { width:300px;height:300px;background:radial-gradient(circle,#e8c0f028,transparent 70%);top:35%;left:25%;animation:drift 11s ease-in-out infinite -8s; }
+@keyframes drift { 0%,100%{transform:translate(0,0);}50%{transform:translate(18px,-18px);} }
+
+/* Luna decorativa clara */
+.moon-deco {
+  position:fixed;top:-60px;right:-50px;
+  width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle at 38% 38%,#f0cc6e22,#e8a04418,transparent 65%);
+  border:1px solid #d4a84328;
+  box-shadow:0 0 100px #d4a84318,inset 0 0 80px #f0cc6e10;
+  z-index:1;animation:moonBreath 7s ease-in-out infinite;
+}
+@keyframes moonBreath { 0%,100%{opacity:0.6;}50%{opacity:1;} }
+
+/* ── PHONE ── */
+.phone-wrapper { position:relative;z-index:10;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:40px 20px 60px; }
+
+.phone {
+  width:100%;max-width:390px;min-height:844px;
+  background:linear-gradient(160deg,#f8f2ff 0%,#f2eaff 40%,#f8f0ff 70%,#fff8ff 100%);
+  border-radius:50px;
+  border:1px solid #d4b8ee44;
+  box-shadow:0 40px 100px #c8a0e844,0 0 0 1px #ffffff88,inset 0 1px 0 #ffffffcc,0 0 60px #e0c8f822;
+  overflow:hidden;display:flex;flex-direction:column;position:relative;
+}
+
+.notch { width:126px;height:34px;background:#f0eaff;border-radius:0 0 20px 20px;margin:0 auto;flex-shrink:0;z-index:10; }
+
+/* Nav tabs */
+.nav-tabs { display:flex;gap:0;border-bottom:1px solid #d4b8ee44;flex-shrink:0;margin:0 28px; }
+.nav-tab { flex:1;text-align:center;padding:10px 0;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c0a0d888;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.3s;font-family:'Jost',sans-serif;font-weight:300; }
+.nav-tab.active { color:#9b60c8;border-bottom-color:#9b60c8; }
+
+.screens { flex:1;position:relative;overflow:hidden; }
+.screen { position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;opacity:0;pointer-events:none;transition:opacity 0.5s ease,transform 0.5s ease;transform:translateX(40px); }
+.screen.active { opacity:1;pointer-events:all;transform:translateX(0)!important; }
+
+/* ══════ BIENVENIDA ══════ */
+#welcome { justify-content:space-between;padding:0 28px 44px; }
+
+.floaters { position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none; }
+.floater { position:absolute;white-space:nowrap;animation:floatAcross var(--fd) linear infinite var(--fdl);opacity:0; }
+.floater.symbol { font-size:var(--fs);color:var(--fc); }
+.floater.word { font-family:'Jost',sans-serif;font-size:var(--fs);font-weight:300;letter-spacing:3px;text-transform:uppercase;color:var(--fc); }
+@keyframes floatAcross { 0%{transform:translateX(-120px) translateY(var(--fy));opacity:0;}5%{opacity:var(--fo);}90%{opacity:var(--fo);}100%{transform:translateX(450px) translateY(var(--fy));opacity:0;} }
+.floater.rtl { animation-name:floatRTL; }
+@keyframes floatRTL { 0%{transform:translateX(450px) translateY(var(--fy));opacity:0;}5%{opacity:var(--fo);}90%{opacity:var(--fo);}100%{transform:translateX(-120px) translateY(var(--fy));opacity:0;} }
+
+.w-top { display:flex;flex-direction:column;align-items:center;padding-top:28px;position:relative;z-index:3; }
+
+.sigil {
+  width:155px;height:155px;margin-bottom:20px;
+  filter:drop-shadow(0 0 24px #b080d855) drop-shadow(0 0 50px #d4a84330);
+  animation:sigilIn 1.2s cubic-bezier(0.34,1.56,0.64,1) both,sigilFloat 5s ease-in-out 1.2s infinite;
+}
+@keyframes sigilIn { from{opacity:0;transform:scale(0.75) rotate(-8deg);}to{opacity:1;transform:scale(1) rotate(0);} }
+@keyframes sigilFloat { 0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);} }
+
+.app-name {
+  font-family:'Cormorant Garamond',serif;font-size:60px;font-weight:300;letter-spacing:14px;text-indent:14px;
+  background:linear-gradient(135deg,#c8781e 0%,#9b50c8 35%,#c878b0 65%,#c8781e 100%);
+  background-size:280% 280%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:nameIn 1s ease-out 0.3s both,shimmer 5s ease-in-out infinite;text-align:center;
+}
+@keyframes nameIn { from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);} }
+@keyframes shimmer { 0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;} }
+
+.w-middle { position:relative;z-index:3;width:100%; }
+
+.features { display:flex;flex-direction:column;gap:10px;width:100%; }
+.feat {
+  display:flex;align-items:center;gap:13px;
+  background:#ffffffaa;
+  border:1px solid #d4b8ee55;
+  border-radius:18px;padding:14px 16px;
+  position:relative;overflow:hidden;
+  animation:fadeUp 0.8s ease-out both;
+  backdrop-filter:blur(20px);
+  box-shadow:0 4px 20px #c8a0e822;
+}
+.feat::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a84330,transparent); }
+.feat:nth-child(1){animation-delay:0.6s;}
+.feat:nth-child(2){animation-delay:0.75s;}
+.feat:nth-child(3){animation-delay:0.9s;}
+
+.feat-icon { width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0; }
+.i-purple { background:linear-gradient(135deg,#e8d0ff,#d8b8f8);box-shadow:0 4px 12px #c8a0e833; }
+.i-gold   { background:linear-gradient(135deg,#fff0c8,#f8d888);box-shadow:0 4px 12px #d4a84322; }
+.i-rose   { background:linear-gradient(135deg,#ffe0ee,#f8b8d0);box-shadow:0 4px 12px #e8789822; }
+
+.feat-text { flex:1; }
+.feat-title { font-size:13px;font-weight:400;color:#4a2870;margin-bottom:2px; }
+.feat-sub   { font-size:10.5px;font-weight:300;color:#9878b8;line-height:1.4; }
+.feat-arr   { font-size:15px;color:#c8a0d8; }
+
+.w-bottom { width:100%;position:relative;z-index:3; }
+
+/* ══════ ONBOARDING ══════ */
+.progress-bar { display:flex;gap:6px;justify-content:center;padding:14px 40px 0;flex-shrink:0;transition:opacity 0.4s; }
+.progress-dot { height:3px;border-radius:2px;background:#d4b8ee44;flex:1;transition:background 0.5s; }
+.progress-dot.active { background:linear-gradient(90deg,#9b60c8,#d4a843); }
+.progress-dot.done   { background:#9b60c855; }
+
+.step { position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:28px 28px 40px;opacity:0;pointer-events:none;transform:translateX(40px);transition:opacity 0.45s ease,transform 0.45s ease; }
+.step.active { opacity:1;pointer-events:all;transform:translateX(0); }
+.step.exit   { opacity:0;transform:translateX(-40px); }
+
+.step-top { width:100%;text-align:center; }
+.step-icon { font-size:46px;margin-bottom:16px;display:block;animation:iconFloat 4s ease-in-out infinite; }
+@keyframes iconFloat { 0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);} }
+.step-question { font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;font-style:italic;color:#3d1a60;line-height:1.4;margin-bottom:8px; }
+.step-sub { font-size:11px;font-weight:300;letter-spacing:0.5px;color:#9878b8;line-height:1.6; }
+
+.step-middle { width:100%; }
+.input-label { font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#9b60c8aa;margin-bottom:7px;display:block;text-align:center; }
+
+.input-ritual {
+  width:100%;padding:15px 18px;
+  background:#ffffffbb;
+  border:1px solid #d4b8ee66;
+  border-radius:14px;
+  color:#3d1a60;font-family:'Jost',sans-serif;font-size:15px;font-weight:300;letter-spacing:1px;
+  outline:none;text-align:center;
+  transition:border-color 0.3s,box-shadow 0.3s;margin-bottom:10px;
+  -webkit-appearance:none;
+  box-shadow:0 4px 16px #c8a0e818;
+}
+.input-ritual::placeholder { color:#c0a0d888;font-size:13px; }
+.input-ritual:focus { border-color:#9b60c866;box-shadow:0 0 0 3px #9b60c814,0 4px 20px #c8a0e828; }
+
+.input-hint { font-size:10px;color:#9878b877;text-align:center;font-style:italic;font-family:'Cormorant Garamond',serif;margin-top:4px; }
+.gap { height:12px; }
+
+.intenciones { display:flex;flex-direction:column;gap:9px;width:100%; }
+.intencion {
+  padding:14px 16px;
+  background:#ffffffaa;
+  border:1px solid #d4b8ee44;
+  border-radius:14px;
+  color:#6a40a0;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:300;font-style:italic;
+  cursor:pointer;text-align:center;line-height:1.4;
+  transition:all 0.3s ease;position:relative;overflow:hidden;
+  box-shadow:0 4px 16px #c8a0e814;
+}
+.intencion:hover { border-color:#9b60c844;background:#f0e4ffee;color:#3d1a60;transform:translateY(-1px);box-shadow:0 6px 20px #c8a0e828; }
+.intencion.selected { border-color:#9b60c888;background:linear-gradient(135deg,#e8d0ff,#fff0e8);color:#3d1a60;box-shadow:0 6px 24px #9b60c822; }
+.intencion.selected::after { content:'✦';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#d4a843;font-size:10px;font-style:normal; }
+
+/* Welcome final */
+.welcome-wrap { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:20px; }
+.welcome-sigil { width:110px;height:110px;margin-bottom:24px;filter:drop-shadow(0 0 24px #b080d855) drop-shadow(0 0 50px #d4a84330);animation:sigilSpin 20s linear infinite,sigilGlow 3s ease-in-out infinite; }
+@keyframes sigilSpin { to{transform:rotate(360deg);} }
+@keyframes sigilGlow { 0%,100%{filter:drop-shadow(0 0 24px #b080d855) drop-shadow(0 0 50px #d4a84330);}50%{filter:drop-shadow(0 0 40px #b080d888) drop-shadow(0 0 70px #d4a84355);} }
+.welcome-eyebrow { font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#9b60c888;margin-bottom:12px; }
+.welcome-name { font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:300;background:linear-gradient(135deg,#c8781e,#9b50c8,#c878b0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;line-height:1.1; }
+.welcome-msg { font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;font-style:italic;color:#6a40a0;line-height:1.6;margin-bottom:24px; }
+.welcome-msg em { font-style:normal;background:linear-gradient(135deg,#c8781e,#d4a843);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.carta-loading { display:flex;align-items:center;gap:10px;background:#ffffffbb;border:1px solid #d4a84333;border-radius:12px;padding:13px 18px;margin-bottom:24px;width:100%;box-shadow:0 4px 16px #d4a84314; }
+.carta-spinner { width:18px;height:18px;border-radius:50%;border:2px solid #d4a84344;border-top-color:#d4a843;animation:spinr 1s linear infinite;flex-shrink:0; }
+@keyframes spinr { to{transform:rotate(360deg);} }
+.carta-text { font-size:10.5px;font-weight:300;color:#9b60c8;letter-spacing:1px; }
+
+/* ── BOTONES ── */
+.btn-primary {
+  width:100%;padding:17px;
+  background:linear-gradient(135deg,#9b60c8,#7b40a8,#b878d0);
+  border:none;border-radius:18px;
+  color:#fff5ffee;font-family:'Jost',sans-serif;font-size:11px;font-weight:300;letter-spacing:4px;text-transform:uppercase;
+  cursor:pointer;margin-bottom:11px;position:relative;overflow:hidden;
+  box-shadow:0 12px 36px #9b60c844,0 0 0 1px #ffffff44;
+  transition:transform 0.2s ease,opacity 0.2s;
+  animation:btnBreath 4s ease-in-out infinite;
+}
+.btn-primary:disabled { opacity:0.3;cursor:not-allowed;animation:none; }
+.btn-primary::after { content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,#ffffff22,transparent);animation:shine 4s ease-in-out infinite 2s; }
+@keyframes shine { 0%{left:-100%;}35%,100%{left:110%;} }
+@keyframes btnBreath { 0%,100%{box-shadow:0 12px 36px #9b60c844,0 0 0 1px #ffffff44;}50%{box-shadow:0 12px 48px #9b60c866,0 0 0 1px #ffffff66;} }
+.btn-primary:not(:disabled):hover { transform:translateY(-2px); }
+
+.btn-back { display:block;width:100%;text-align:center;background:none;border:none;font-family:'Jost',sans-serif;font-size:10px;font-weight:300;letter-spacing:2px;color:#9878b888;cursor:pointer;text-transform:uppercase;transition:color 0.3s; }
+.btn-back:hover { color:#6a40a0; }
+.btn-link { display:block;width:100%;text-align:center;background:none;border:none;font-family:'Jost',sans-serif;font-size:10px;font-weight:300;letter-spacing:2px;color:#9878b877;cursor:pointer;text-transform:uppercase;transition:color 0.3s; }
+.btn-link:hover { color:#6a40a0; }
+
+.home-indicator { width:134px;height:5px;background:#c8a0e844;border-radius:3px;margin:16px auto 8px;flex-shrink:0; }
+.watermark { position:fixed;bottom:20px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#9878b844;white-space:nowrap;z-index:20; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
+</style>
+  <link rel="manifest" href="manifest.json">
+  <script src="anima_config.js"></script>
+  <meta name="theme-color" content="#9b60c8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ánima">
+  <link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+
+<div class="cosmos"></div>
+<div class="stars" id="stars"></div>
+<div class="nebula n1"></div>
+<div class="nebula n2"></div>
+<div class="nebula n3"></div>
+<div class="moon-deco"></div>
+
+<div class="phone-wrapper">
+  <div class="phone">
+    <div class="notch"></div>
+
+    <div class="nav-tabs">
+      <div class="nav-tab active" onclick="showScreen('welcome')">Inicio</div>
+      <div class="nav-tab" onclick="showScreen('onboarding')">Onboarding</div>
+    </div>
+
+    <div class="screens">
+
+      <!-- ══ BIENVENIDA ══ -->
+      <div class="screen active" id="welcome" style="justify-content:space-between;padding:0 28px 44px;">
+        <div class="floaters" id="floaters"></div>
+
+        <div class="w-top">
+          <div class="sigil">
+            <svg viewBox="0 0 155 155" fill="none">
+              <circle cx="77" cy="77" r="71" stroke="#b090d8" stroke-width="0.7" stroke-dasharray="4 8" opacity="0.5">
+                <animateTransform attributeName="transform" type="rotate" from="0 77 77" to="360 77 77" dur="28s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="77" cy="77" r="54" stroke="#d4a843" stroke-width="0.6" opacity="0.4">
+                <animateTransform attributeName="transform" type="rotate" from="360 77 77" to="0 77 77" dur="18s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="77" cy="77" r="34" stroke="#e8a0c8" stroke-width="0.5" stroke-dasharray="2 5" opacity="0.5">
+                <animateTransform attributeName="transform" type="rotate" from="0 77 77" to="360 77 77" dur="12s" repeatCount="indefinite"/>
+              </circle>
+              <path d="M77 22 L91 58 L129 58 L100 78 L111 114 L77 94 L43 114 L54 78 L25 58 L63 58 Z" stroke="#c8a0e0" stroke-width="0.8" fill="none" opacity="0.4"/>
+              <path d="M77 50 C90 50 101 62 101 77 C101 92 90 104 77 104 C83 97 88 88 88 77 C88 66 83 57 77 50Z" fill="#d4a843" opacity="0.9"/>
+              <circle cx="77" cy="77" r="6" fill="#f0cc6e">
+                <animate attributeName="r" values="6;8;6" dur="3s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="77" cy="21" r="3" fill="#b090d8" opacity="0.8"/>
+              <circle cx="77" cy="133" r="3" fill="#b090d8" opacity="0.8"/>
+              <circle cx="21" cy="77" r="3" fill="#b090d8" opacity="0.8"/>
+              <circle cx="133" cy="77" r="3" fill="#b090d8" opacity="0.8"/>
+            </svg>
+          </div>
+          <div class="app-name">ÁNIMA</div>
+        </div>
+
+        <div class="w-middle">
+          <div class="features">
+            <div class="feat">
+              <div class="feat-icon i-purple">🔮</div>
+              <div class="feat-text">
+                <div class="feat-title">Carta natal + horóscopo diario</div>
+                <div class="feat-sub">Personalizado para ti, no para tu signo</div>
+              </div>
+              <div class="feat-arr">›</div>
+            </div>
+            <div class="feat">
+              <div class="feat-icon i-gold">🌙</div>
+              <div class="feat-text">
+                <div class="feat-title">Manifestación, luna y rituales</div>
+                <div class="feat-sub">Calendario lunar de belleza y más</div>
+              </div>
+              <div class="feat-arr">›</div>
+            </div>
+            <div class="feat">
+              <div class="feat-icon i-rose">💬</div>
+              <div class="feat-text">
+                <div class="feat-title">Chat con el universo</div>
+                <div class="feat-sub">Dile qué quieres manifestar</div>
+              </div>
+              <div class="feat-arr">›</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-bottom">
+          <button class="btn-primary" onclick="showScreen('onboarding')">✦ &nbsp; Descubrir mi Ánima</button>
+          <button class="btn-link">Ya tengo cuenta</button>
+        </div>
+      </div>
+
+      <!-- ══ ONBOARDING ══ -->
+      <div class="screen" id="onboarding" style="flex-direction:column;padding:0;align-items:stretch;">
+        <div class="progress-bar" id="progressBar">
+          <div class="progress-dot active" id="dot0"></div>
+          <div class="progress-dot" id="dot1"></div>
+          <div class="progress-dot" id="dot2"></div>
+        </div>
+        <div style="flex:1;position:relative;overflow:hidden;">
+
+          <!-- Paso 1 -->
+          <div class="step active" id="step1">
+            <div class="step-top">
+              <span class="step-icon">🌙</span>
+              <div class="step-question">¿Cómo quieres que el universo te llame?</div>
+              <div class="step-sub">Este será tu nombre sagrado en Ánima</div>
+            </div>
+            <div class="step-middle">
+              <span class="input-label">✦ &nbsp; Tu nombre</span>
+              <input class="input-ritual" id="inputNombre" type="text" placeholder="Escribe tu nombre..." maxlength="30" autocomplete="off"/>
+              <div class="input-hint">"El universo conoce tu nombre desde siempre"</div>
+            </div>
+            <div class="step-bottom" style="width:100%;">
+              <button class="btn-primary" id="btn1" onclick="goStep(2)" disabled>Continuar &nbsp; ✦</button>
+            </div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="step" id="step2">
+            <div class="step-top">
+              <span class="step-icon">⭐</span>
+              <div class="step-question">¿Cuándo llegaste a este mundo?</div>
+              <div class="step-sub">Tu carta natal se teje con este momento único</div>
+            </div>
+            <div class="step-middle">
+              <span class="input-label">✦ &nbsp; Fecha de nacimiento</span>
+              <input class="input-ritual" id="inputFecha" type="date" style="color:#6a40a0;"/>
+              <div class="gap"></div>
+              <span class="input-label">✦ &nbsp; Hora de nacimiento</span>
+              <input class="input-ritual" id="inputHora" type="time" style="color:#6a40a0;"/>
+              <div class="input-hint">Si no la sabes, pon las 12:00 del mediodía</div>
+              <div class="gap"></div>
+              <span class="input-label">✦ &nbsp; Ciudad de nacimiento</span>
+              <input class="input-ritual" id="inputCiudad" type="text" placeholder="Ciudad, México..." autocomplete="off"/>
+            </div>
+            <div class="step-bottom" style="width:100%;">
+              <button class="btn-primary" id="btn2" onclick="goStep(3)" disabled>Continuar &nbsp; ✦</button>
+              <button class="btn-back" onclick="goStep(1)">← Regresar</button>
+            </div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="step" id="step3">
+            <div class="step-top">
+              <span class="step-icon">🔮</span>
+              <div class="step-question">¿Qué le dices al universo hoy?</div>
+              <div class="step-sub">Elige tu intención de entrada</div>
+            </div>
+            <div class="step-middle">
+              <div class="intenciones">
+                <div class="intencion" onclick="selectInt(this)">"Estoy lista para recibir lo que tienes para mí"</div>
+                <div class="intencion" onclick="selectInt(this)">"Busco claridad en mi camino"</div>
+                <div class="intencion" onclick="selectInt(this)">"Quiero sanar y soltar lo que ya no me sirve"</div>
+                <div class="intencion" onclick="selectInt(this)">"Estoy abriendo mi corazón al amor"</div>
+                <div class="intencion" onclick="selectInt(this)">"Vengo a manifestar mis sueños"</div>
+              </div>
+            </div>
+            <div class="step-bottom" style="width:100%;">
+              <button class="btn-primary" id="btn3" onclick="goStep(4)" disabled>El universo me escucha &nbsp; ✦</button>
+              <button class="btn-back" onclick="goStep(2)">← Regresar</button>
+            </div>
+          </div>
+
+          <!-- Paso 4 -->
+          <div class="step" id="step4">
+            <div class="welcome-wrap">
+              <svg class="welcome-sigil" viewBox="0 0 120 120" fill="none">
+                <circle cx="60" cy="60" r="55" stroke="#b090d8" stroke-width="0.6" stroke-dasharray="4 8" opacity="0.5"/>
+                <circle cx="60" cy="60" r="40" stroke="#d4a843" stroke-width="0.5" opacity="0.4"/>
+                <circle cx="60" cy="60" r="24" stroke="#e8a0c8" stroke-width="0.4" stroke-dasharray="2 5" opacity="0.5"/>
+                <path d="M60 40 C70 40 78 49 78 60 C78 71 70 80 60 80 C65 74 68 67 68 60 C68 53 65 46 60 40Z" fill="#d4a843" opacity="0.9"/>
+                <circle cx="60" cy="60" r="5" fill="#f0cc6e"><animate attributeName="r" values="5;7;5" dur="2s" repeatCount="indefinite"/></circle>
+              </svg>
+              <div class="welcome-eyebrow">El universo te escucha</div>
+              <div class="welcome-name" id="welcomeName">Amanda</div>
+              <div class="welcome-msg">Tu viaje comienza <em>hoy</em>.<br>Tu Ánima te está esperando.</div>
+              <div class="carta-loading">
+                <div class="carta-spinner"></div>
+                <div class="carta-text">Tejiendo tu carta natal...</div>
+              </div>
+              <button class="btn-primary">Entrar a mi Ánima &nbsp; ✦</button>
+            </div>
+          </div>
+
+        </div>
+        <div class="home-indicator"></div>
+      </div>
+
+    </div>
+    <div class="home-indicator" id="mainIndicator"></div>
+  </div>
+</div>
+
+<div class="watermark">Ánima · Prototipo · México 2026</div>
+
+<script>
+// Partículas pastel
+const sc=document.getElementById('stars');
+const pastelColors=['#c8a0e8','#f0c8e0','#d4b8f0','#e8d0a8','#f0b8d0'];
+for(let i=0;i<120;i++){
+  const s=document.createElement('div');s.className='star';
+  const size=Math.random()*3+1;
+  const color=pastelColors[Math.floor(Math.random()*pastelColors.length)];
+  const minOp=(Math.random()*0.1+0.05).toFixed(2);
+  const maxOp=Math.min((parseFloat(minOp)+Math.random()*0.3+0.1),0.7).toFixed(2);
+  s.style.cssText=`width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:${color};--dur:${(Math.random()*4+2).toFixed(1)}s;--delay:-${(Math.random()*6).toFixed(1)}s;--min-op:${minOp};--max-op:${maxOp};`;
+  sc.appendChild(s);
+}
+
+// Floaters pastel
+const fc=document.getElementById('floaters');
+const symbols=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','☽','✦','✧','⋆'];
+const words=['manifestación','luna nueva','rituales','carta natal','intuición','abundancia','venus','afirmación'];
+const fColors=['#c8a0e833','#d4a84322','#f0c8d833','#e0b0f028','#d4b8e833'];
+const items=[...symbols.slice(0,10).map(t=>({type:'symbol',text:t})),...words.slice(0,7).map(t=>({type:'word',text:t}))];
+items.forEach(item=>{
+  const el=document.createElement('div');
+  el.className=`floater ${item.type}${Math.random()>0.5?' rtl':''}`;
+  el.textContent=item.text;
+  const color=fColors[Math.floor(Math.random()*fColors.length)];
+  const fontSize=item.type==='symbol'?`${Math.random()*10+10}px`:`${Math.random()*4+8}px`;
+  const opacity=(Math.random()*0.4+0.15).toFixed(2);
+  el.style.cssText=`top:${Math.random()*85+5}%;--fd:${(Math.random()*18+14).toFixed(1)}s;--fdl:-${(Math.random()*20).toFixed(1)}s;--fc:${color};--fs:${fontSize};--fo:${opacity};--fy:${(Math.random()*20-10).toFixed(0)}px;`;
+  fc.appendChild(el);
+});
+
+// Nav
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>{
+    t.classList.toggle('active',(i===0&&id==='welcome')||(i===1&&id==='onboarding'));
+  });
+  document.getElementById('mainIndicator').style.display=id==='onboarding'?'none':'block';
+}
+
+// Steps
+let currentStep=1;
+const inputNombre=document.getElementById('inputNombre');
+const btn1=document.getElementById('btn1');
+inputNombre.addEventListener('input',()=>{btn1.disabled=inputNombre.value.trim().length<2;});
+const inputFecha=document.getElementById('inputFecha');
+const inputCiudad=document.getElementById('inputCiudad');
+const btn2=document.getElementById('btn2');
+function check2(){btn2.disabled=!(inputFecha.value&&inputCiudad.value.trim().length>1);}
+inputFecha.addEventListener('change',check2);
+inputCiudad.addEventListener('input',check2);
+function selectInt(el){
+  document.querySelectorAll('.intencion').forEach(i=>i.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btn3').disabled=false;
+}
+function goStep(n){
+  const cur=document.getElementById(`step${currentStep}`);
+  const nxt=document.getElementById(`step${n}`);
+  const dots=document.querySelectorAll('.progress-dot');
+  document.getElementById('progressBar').style.opacity=n===4?'0':'1';
+  cur.classList.add('exit');
+  setTimeout(()=>{
+    cur.classList.remove('active','exit');
+    nxt.classList.add('active');
+    currentStep=n;
+    dots.forEach((d,i)=>{d.classList.remove('active','done');if(i<n-1)d.classList.add('done');else if(i===n-1)d.classList.add('active');});
+    if(n===4) document.getElementById('welcomeName').textContent=inputNombre.value.trim()||'Alma';
+  },300);
+}
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
+</script>
+</body>
+</html>

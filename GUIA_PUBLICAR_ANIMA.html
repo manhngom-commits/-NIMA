@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo publicar Ánima — Guía paso a paso</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0;padding:0;box-sizing:border-box; }
+body { background:#0d0520;color:#f5e8ff;font-family:'Jost',sans-serif;padding:30px 20px;max-width:600px;margin:0 auto;line-height:1.7; }
+
+h1 { font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:#f0cc6e;margin-bottom:6px; }
+.sub { font-size:13px;color:#9878b8;margin-bottom:40px; }
+
+.paso { background:#1a0840;border:1px solid #9b60c822;border-radius:16px;padding:20px;margin-bottom:16px;position:relative; }
+.paso-num { position:absolute;top:-12px;left:20px;background:linear-gradient(135deg,#9b60c8,#7b40a8);border-radius:20px;padding:3px 14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#f5e8ff; }
+.paso h2 { font-family:'Cormorant Garamond',serif;font-size:20px;color:#e8d0ff;margin-bottom:10px;margin-top:6px; }
+.paso p { font-size:13px;color:#c8a0e888;margin-bottom:8px; }
+.paso p strong { color:#f5e8ff;font-weight:400; }
+
+.url { background:#0d0520;border:1px solid #9b60c833;border-radius:10px;padding:10px 14px;font-family:monospace;font-size:13px;color:#f0cc6e;margin:8px 0;word-break:break-all; }
+
+.tip { background:#d4a84311;border:1px solid #d4a84333;border-radius:10px;padding:10px 14px;font-size:12px;color:#d4a84388;margin-top:8px; }
+.tip strong { color:#d4a843; }
+
+.archivos { display:flex;flex-direction:column;gap:4px;margin:8px 0; }
+.archivo { background:#0d0520;border-radius:8px;padding:6px 12px;font-family:monospace;font-size:12px;color:#c8a0e8;display:flex;align-items:center;gap:8px; }
+.archivo-icon { font-size:14px; }
+
+.separador { height:1px;background:linear-gradient(90deg,transparent,#9b60c833,transparent);margin:24px 0; }
+
+.final { text-align:center;padding:24px;background:linear-gradient(135deg,#2a0848,#3d1a60);border-radius:16px;border:1px solid #d4a84322; }
+.final h2 { font-family:'Cormorant Garamond',serif;font-size:24px;color:#f0cc6e;margin-bottom:8px; }
+.final p { font-size:13px;color:#c8a0e888; }
+</style>
+</head>
+<body>
+
+<h1>Cómo publicar Ánima 🔮</h1>
+<div class="sub">Guía paso a paso para hacerlo tú sola · Gratis · Sin programar</div>
+
+<!-- PASO 1 -->
+<div class="paso">
+  <div class="paso-num">Paso 1</div>
+  <h2>Crea tu cuenta en GitHub</h2>
+  <p>GitHub es donde van a vivir los archivos de Ánima. Es gratis.</p>
+  <div class="url">github.com → Sign up</div>
+  <p>Usa tu email, elige un usuario (ej: <strong>samanda-anima</strong>) y crea tu cuenta.</p>
+  <div class="tip"><strong>💡 Tip:</strong> El nombre de usuario que elijas va a aparecer en el link de tu app — elige algo bonito.</div>
+</div>
+
+<!-- PASO 2 -->
+<div class="paso">
+  <div class="paso-num">Paso 2</div>
+  <h2>Crea un repositorio nuevo</h2>
+  <p>Un repositorio es como una carpeta donde viven tus archivos.</p>
+  <p>Una vez dentro de GitHub:</p>
+  <p>1. Toca el botón verde <strong>"New"</strong> o <strong>"+"</strong> arriba a la derecha</p>
+  <p>2. En <strong>Repository name</strong> escribe exactamente: <strong>anima</strong></p>
+  <p>3. Marca la opción <strong>"Public"</strong></p>
+  <p>4. Toca <strong>"Create repository"</strong></p>
+  <div class="tip"><strong>💡 Importante:</strong> Debe llamarse exactamente "anima" en minúsculas para que el link quede bonito.</div>
+</div>
+
+<!-- PASO 3 -->
+<div class="paso">
+  <div class="paso-num">Paso 3</div>
+  <h2>Sube todos tus archivos</h2>
+  <p>Dentro de tu repositorio recién creado:</p>
+  <p>1. Toca <strong>"uploading an existing file"</strong> o el botón <strong>"Add file → Upload files"</strong></p>
+  <p>2. Sube TODOS estos archivos que descargaste:</p>
+  <div class="archivos">
+    <div class="archivo"><div class="archivo-icon">📄</div>anima_completo.html</div>
+    <div class="archivo"><div class="archivo-icon">📄</div>anima_home.html</div>
+    <div class="archivo"><div class="archivo-icon">📄</div>anima_carta_natal.html</div>
+    <div class="archivo"><div class="archivo-icon">📄</div>anima_dinero.html</div>
+    <div class="archivo"><div class="archivo-icon">📄</div>anima_chat.html</div>
+    <div class="archivo"><div class="archivo-icon">📄</div>anima_cartas.html</div>
+    <div class="archivo"><div class="archivo-icon">📄</div>anima_anio.html</div>
+    <div class="archivo"><div class="archivo-icon">📄</div>anima_suscripcion.html</div>
+    <div class="archivo"><div class="archivo-icon">📄</div>manifest.json</div>
+    <div class="archivo"><div class="archivo-icon">📄</div>sw.js</div>
+    <div class="archivo"><div class="archivo-icon">🖼️</div>icon.svg</div>
+  </div>
+  <p>3. Abajo escribe en el campo <strong>"Commit changes"</strong>: <em>Primera versión de Ánima</em></p>
+  <p>4. Toca <strong>"Commit changes"</strong></p>
+</div>
+
+<!-- PASO 4 -->
+<div class="paso">
+  <div class="paso-num">Paso 4</div>
+  <h2>Activa GitHub Pages</h2>
+  <p>Esta es la magia — convierte tus archivos en un sitio web real.</p>
+  <p>1. Ve a <strong>Settings</strong> (arriba en tu repositorio)</p>
+  <p>2. En el menú izquierdo busca <strong>"Pages"</strong></p>
+  <p>3. En <strong>Source</strong> selecciona <strong>"Deploy from a branch"</strong></p>
+  <p>4. En Branch selecciona <strong>"main"</strong> y carpeta <strong>"/ (root)"</strong></p>
+  <p>5. Toca <strong>"Save"</strong></p>
+  <div class="tip"><strong>⏳ Espera 2-3 minutos</strong> y refresca la página. Aparecerá tu link.</div>
+</div>
+
+<!-- PASO 5 -->
+<div class="paso">
+  <div class="paso-num">Paso 5</div>
+  <h2>¡Tu app ya está viva!</h2>
+  <p>Tu link quedará así:</p>
+  <div class="url">https://TU-USUARIO.github.io/anima/anima_completo.html</div>
+  <p>Comparte ese link con tus primeras usuarias. En el celular, al abrirlo en Chrome o Safari, van a ver la opción <strong>"Agregar a pantalla de inicio"</strong> — y se instala como app. 🎉</p>
+  <div class="tip"><strong>💡 Para tener un dominio propio</strong> como anima.mx (~$300 MXN/año en namecheap.com o godaddy.com), lo conectas en esa misma sección de Pages → Custom domain.</div>
+</div>
+
+<div class="separador"></div>
+
+<!-- PASO 6 — EXTRA -->
+<div class="paso">
+  <div class="paso-num">Extra · IA real en el chat</div>
+  <h2>Conectar el Chat con Claude</h2>
+  <p>El chat ya tiene respuestas preprogramadas para el prototipo. Para que la IA responda de verdad:</p>
+  <p>1. Crea cuenta en <strong>console.anthropic.com</strong></p>
+  <p>2. Genera una <strong>API Key</strong> gratuita</p>
+  <p>3. Díselo a Claude y lo integra en el chat en minutos</p>
+  <div class="tip"><strong>💡 Costo:</strong> Los primeros $5 USD de crédito son gratis. Para tus primeras 50 usuarias alcanza de sobra.</div>
+</div>
+
+<div class="separador"></div>
+
+<div class="final">
+  <h2>Ya tienes todo ✦</h2>
+  <p>Los archivos listos, el plan de negocio y esta guía.<br>
+  Lo único que falta eres tú publicándola.<br><br>
+  <em style="color:#d4a843;">El universo ya preparó el camino. Solo da el primer paso.</em></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ánima — Planes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0;padding:0;box-sizing:border-box; }
+html, body { width:100%;min-height:100vh;background:#0d0520;font-family:'Jost',sans-serif;overflow-x:hidden; }
+
+/* Fondo cosmos */
+.cosmos { position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 100% 60% at 50% 0%,#3d1a6088,transparent 60%),linear-gradient(180deg,#0d0520 0%,#1a0840 50%,#0d0520 100%); }
+.stars { position:fixed;inset:0;z-index:1; }
+.star { position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite var(--delay); }
+@keyframes twinkle { 0%,100%{opacity:0.1;}50%{opacity:0.8;} }
+
+.phone-wrapper { position:relative;z-index:10;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:40px 20px 60px; }
+.phone { width:100%;max-width:390px;min-height:844px;background:linear-gradient(180deg,#120330 0%,#1a0840 40%,#120330 100%);border-radius:50px;border:1px solid #9b60c822;box-shadow:0 40px 100px #000000bb,inset 0 1px 0 #9b60c822;overflow:hidden;display:flex;flex-direction:column;position:relative; }
+.notch { width:126px;height:34px;background:#1a0840;border-radius:0 0 20px 20px;margin:0 auto;flex-shrink:0; }
+.status-bar { display:flex;justify-content:space-between;align-items:center;padding:4px 28px 0;flex-shrink:0; }
+.status-time { font-size:12px;color:#9878b8; }
+.status-icons { font-size:12px;color:#6a4090; }
+
+.scroll { flex:1;overflow-y:auto;padding:0 0 40px;scrollbar-width:none; }
+.scroll::-webkit-scrollbar { display:none; }
+
+/* ── GANCHO EMOCIONAL ── */
+.gancho { padding:24px 24px 0;text-align:center; }
+.close-btn { position:absolute;top:56px;right:24px;width:32px;height:32px;border-radius:50%;background:#ffffff0a;border:1px solid #9b60c822;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9878b8;cursor:pointer; }
+
+.sigilo { font-size:56px;margin-bottom:20px;filter:drop-shadow(0 0 30px #9b60c855);animation:sigiloFloat 4s ease-in-out infinite; }
+@keyframes sigiloFloat { 0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);} }
+
+.gancho-titulo { font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:#f5e8ff;line-height:1.2;margin-bottom:12px; }
+.gancho-titulo strong { font-weight:600;color:#f0cc6e;display:block; }
+.gancho-sub { font-family:'Cormorant Garamond',serif;font-size:15px;color:#9878b8aa;font-style:italic;line-height:1.65;margin-bottom:24px; }
+.gancho-sub em { font-style:normal;color:#c8a0e8; }
+
+/* Separador */
+.sep { display:flex;align-items:center;gap:12px;margin-bottom:24px; }
+.sep-line { flex:1;height:1px;background:linear-gradient(90deg,transparent,#9b60c833,transparent); }
+.sep-text { font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#9b60c855; }
+
+/* ── PLANES ── */
+.planes { padding:0 20px; }
+
+/* Plan Gratis */
+.plan-card { border-radius:20px;margin-bottom:12px;overflow:hidden;border:1px solid;transition:transform 0.2s; }
+.plan-card:hover { transform:translateY(-1px); }
+
+.plan-gratis { background:#ffffff08;border-color:#9b60c822; }
+.plan-esencial { background:linear-gradient(135deg,#1a0840,#2d0a5c);border-color:#9b60c844; }
+.plan-completa { background:linear-gradient(135deg,#2a0848,#4a1880);border-color:#d4a84344;box-shadow:0 8px 32px #9b60c833; }
+
+.plan-header { padding:16px 18px 12px;display:flex;align-items:flex-start;justify-content:space-between; }
+.plan-nombre { font-family:'Cormorant Garamond',serif;font-size:20px;color:#f5e8ff; }
+.plan-tagline { font-size:10px;color:#9878b8;margin-top:2px;font-style:italic;font-family:'Cormorant Garamond',serif; }
+.plan-precio-wrap { text-align:right; }
+.plan-precio { font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:#f0cc6e;line-height:1; }
+.plan-precio.gratis-precio { font-size:18px;color:#9878b8; }
+.plan-periodo { font-size:9px;color:#9878b844;letter-spacing:1px; }
+
+.plan-badge { display:inline-block;background:linear-gradient(135deg,#d4a843,#f0cc6e);border-radius:20px;padding:3px 10px;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#3d1a00;margin-bottom:10px;margin-left:18px; }
+
+.plan-divider { height:1px;background:#ffffff0a;margin:0 18px; }
+
+.plan-features { padding:12px 18px 16px;display:flex;flex-direction:column;gap:7px; }
+.feature { display:flex;align-items:center;gap:10px; }
+.feature-check { width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0; }
+.check-yes { background:#9b60c822;color:#c8a0e8; }
+.check-no  { background:#ffffff08;color:#6a409055; }
+.feature-text { font-family:'Cormorant Garamond',serif;font-size:13px;line-height:1.4; }
+.feature-text.yes { color:#c8a0e8aa; }
+.feature-text.no  { color:#6a409055;text-decoration:line-through;text-decoration-color:#6a409033; }
+.feature-text strong { font-weight:400; }
+
+.plan-btn { margin:0 18px 18px;width:calc(100% - 36px);padding:14px;border:none;border-radius:14px;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.25s; }
+.btn-gratis   { background:#ffffff0a;border:1px solid #9b60c833;color:#9878b8; }
+.btn-esencial { background:linear-gradient(135deg,#9b60c8,#7b40a8);color:#f5e8ff;box-shadow:0 6px 18px #9b60c844; }
+.btn-completa { background:linear-gradient(135deg,#d4a843,#f0cc6e);color:#2d1000;box-shadow:0 8px 24px #d4a84355; }
+.btn-completa:hover { transform:scale(1.02);box-shadow:0 12px 30px #d4a84366; }
+.btn-esencial:hover { transform:scale(1.02); }
+
+/* Nota legal */
+.nota { text-align:center;padding:16px 24px 0;font-size:10px;color:#6a409055;line-height:1.6;font-family:'Cormorant Garamond',serif;font-style:italic; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);} }
+.anim { animation:fadeUp 0.5s ease-out both; }
+.watermark { position:fixed;bottom:20px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#6a409033;white-space:nowrap;z-index:5; }
+</style>
+  <link rel="manifest" href="manifest.json">
+  <script src="anima_config.js"></script>
+  <meta name="theme-color" content="#9b60c8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ánima">
+  <link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+<div class="cosmos"></div>
+<div class="stars" id="stars"></div>
+
+<div class="phone-wrapper">
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="status-bar">
+      <div class="status-time">9:41</div>
+      <div class="status-icons">●●● 📶 🔋</div>
+    </div>
+
+    <div class="scroll">
+
+      <!-- Gancho emocional -->
+      <div class="gancho anim">
+        <div class="close-btn">✕</div>
+
+        <div class="sigilo">🔮</div>
+
+        <div class="gancho-titulo">
+          El universo tiene<br><strong>más para ti</strong>
+        </div>
+
+        <div class="gancho-sub">
+          Ya diste el primer paso.<br>
+          <em>Ánima</em> tiene todo lo que necesitas para vivir<br>
+          guiada por los astros, la luna y tu intuición —<br>
+          cada día, con intención.
+        </div>
+
+        <div class="sep">
+          <div class="sep-line"></div>
+          <div class="sep-text">Elige tu camino</div>
+          <div class="sep-line"></div>
+        </div>
+      </div>
+
+      <!-- Planes -->
+      <div class="planes">
+
+        <!-- GRATIS -->
+        <div class="plan-card plan-gratis anim" style="animation-delay:0.1s">
+          <div class="plan-header">
+            <div>
+              <div class="plan-nombre">Gratis</div>
+              <div class="plan-tagline">Para empezar el camino</div>
+            </div>
+            <div class="plan-precio-wrap">
+              <div class="plan-precio gratis-precio">$0</div>
+              <div class="plan-periodo">siempre gratis</div>
+            </div>
+          </div>
+          <div class="plan-divider"></div>
+          <div class="plan-features">
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes">Carta natal · Big Three</div></div>
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes">Horóscopo diario</div></div>
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes">Luna de belleza en el inicio</div></div>
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes">1 carta del día</div></div>
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes">3 mensajes al Chat</div></div>
+            <div class="feature"><div class="feature-check check-no">✕</div><div class="feature-text no">Chat ilimitado</div></div>
+            <div class="feature"><div class="feature-check check-no">✕</div><div class="feature-text no">Tu Año X</div></div>
+          </div>
+          <button class="plan-btn btn-gratis">Tu plan actual ✦</button>
+        </div>
+
+        <!-- ESENCIAL -->
+        <div class="plan-card plan-esencial anim" style="animation-delay:0.2s">
+          <div class="plan-header">
+            <div>
+              <div class="plan-nombre" style="color:#e8d0ff;">Esencial</div>
+              <div class="plan-tagline" style="color:#9878b8;">Para vivir con intención</div>
+            </div>
+            <div class="plan-precio-wrap">
+              <div class="plan-precio">$99</div>
+              <div class="plan-periodo" style="color:#d4a84355;">MXN / mes</div>
+            </div>
+          </div>
+          <div class="plan-divider"></div>
+          <div class="plan-features">
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes">Todo lo de Gratis</div></div>
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes"><strong style="color:#e8d0ff;">Chat ilimitado</strong> con el universo</div></div>
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes"><strong style="color:#e8d0ff;">2 cartas</strong> del día · Tu energía + Tu consejo</div></div>
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes">Carta natal completa con tránsitos</div></div>
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes">Mi Abundancia · Las 3 casas del dinero</div></div>
+            <div class="feature"><div class="feature-check check-yes">✦</div><div class="feature-text yes">Diario cósmico ilimitado</div></div>
+            <div class="feature"><div class="feature-check check-no">✕</div><div class="feature-text no">Tu Año X</div></div>
+            <div class="feature"><div class="feature-check check-no">✕</div><div class="feature-text no">3 cartas · Pasado, presente y futuro</div></div>
+          </div>
+          <button class="plan-btn btn-esencial">Comenzar Esencial ✦</button>
+        </div>
+
+        <!-- COMPLETA -->
+        <div class="plan-card plan-completa anim" style="animation-delay:0.3s">
+          <div class="plan-badge">✦ Más popular</div>
+          <div class="plan-header">
+            <div>
+              <div class="plan-nombre" style="color:#f5e8ff;">Completa</div>
+              <div class="plan-tagline" style="color:#d4a84388;">Para las que van en serio</div>
+            </div>
+            <div class="plan-precio-wrap">
+              <div class="plan-precio">$199</div>
+              <div class="plan-periodo" style="color:#d4a84355;">MXN / mes</div>
+            </div>
+          </div>
+          <div class="plan-divider" style="background:#d4a84322;"></div>
+          <div class="plan-features">
+            <div class="feature"><div class="feature-check" style="background:#d4a84322;color:#f0cc6e;">✦</div><div class="feature-text yes">Todo lo de Esencial</div></div>
+            <div class="feature"><div class="feature-check" style="background:#d4a84322;color:#f0cc6e;">✦</div><div class="feature-text yes"><strong style="color:#f5e8ff;">Tu Año X</strong> · Número personal + mes a mes</div></div>
+            <div class="feature"><div class="feature-check" style="background:#d4a84322;color:#f0cc6e;">✦</div><div class="feature-text yes"><strong style="color:#f5e8ff;">3 cartas</strong> · Pasado, presente y futuro</div></div>
+            <div class="feature"><div class="feature-check" style="background:#d4a84322;color:#f0cc6e;">✦</div><div class="feature-text yes">Señales del universo interpretadas</div></div>
+            <div class="feature"><div class="feature-check" style="background:#d4a84322;color:#f0cc6e;">✦</div><div class="feature-text yes">Tránsitos del mes personalizados</div></div>
+            <div class="feature"><div class="feature-check" style="background:#d4a84322;color:#f0cc6e;">✦</div><div class="feature-text yes">Alertas cósmicas importantes</div></div>
+            <div class="feature"><div class="feature-check" style="background:#d4a84322;color:#f0cc6e;">✦</div><div class="feature-text yes">Trabajo de sombra guiado</div></div>
+          </div>
+          <button class="plan-btn btn-completa">Quiero Ánima Completa ✦</button>
+        </div>
+
+        <div class="nota anim" style="animation-delay:0.4s">
+          Cancela cuando quieras · Sin compromisos<br>
+          Pago seguro · Renovación mensual automática
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="watermark">Ánima · Planes · México 2026</div>
+
+<script>
+// Estrellas
+const sc = document.getElementById('stars');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 2 + 0.5;
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+2).toFixed(1)}s;--delay:-${(Math.random()*4).toFixed(1)}s;`;
+  sc.appendChild(s);
+}
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
+</script>
+</body>
+</html>
